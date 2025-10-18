@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Providers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+
+        Blade::if('anycan', function (...$permissions) {
+            $user = Auth::guard('admin')->user();
+            foreach ($permissions as $permission) {
+                if ($user && $user->can($permission)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+
+
+
+    }
+}
