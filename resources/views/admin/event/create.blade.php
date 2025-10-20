@@ -33,14 +33,14 @@
                             placeholder="Enter event title" required>
                     </div>
 
-                    <div>
+                    <!-- <div>
                         <label class="block text-gray-700 font-medium mb-1">
                             Slug <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="slug" value="{{ old('slug') }}"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-cyan-500 focus:ring-0 outline-none"
                             placeholder="Enter event slug" required>
-                    </div>
+                    </div> -->
 
                     <!-- Event Date -->
                     <div>

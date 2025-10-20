@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ClientReview;
 use App\Models\Counter;
+use App\Models\Faq;
 use App\Models\Hero;
 use App\Models\Opportunity;
 use App\Models\Service;
@@ -46,6 +47,13 @@ class WebsiteController extends Controller
     {  
         $data = Blog::where('slug',$slug)->firstOrFail();
         return view('website.news-single',compact('data'));
+    }
+
+    public function faq()
+    {
+        $data = Faq::where('status','active')->get();
+        $setting = Setting::first();
+        return view('website.faq',compact('data','setting'));
     }
 
 

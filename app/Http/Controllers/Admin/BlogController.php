@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class BlogController extends Controller
 {
@@ -32,10 +34,17 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'title' => 'required|unique:blogs,title',
+        ]);
+
         $data = $request->all();
 
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
         $data['image'] = $image;
+
+        $data['slug'] = Str::slug($request->title);
 
         Blog::create($data);
         return redirect()->route('admin.blogs.index')->with('success', 'Data Store successfully!');
@@ -66,6 +75,10 @@ class BlogController extends Controller
     {
         $data = Blog::findOrFail($id);
 
+        $request->validate([
+            'title' => 'required|unique:blogs,title,' . $data->id,
+        ]);
+
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
         if($request->hasFile('image') && $data->image){
             Storage::disk('public')->delete($data->image);
@@ -73,6 +86,9 @@ class BlogController extends Controller
       
         $input = $request->all();
         $input['image'] = $image;
+
+        $input['slug'] = Str::slug($request->title);
+
         $data->update($input);
 
         return redirect()->route('admin.blogs.index')->with('success', 'Data Update successfully!');

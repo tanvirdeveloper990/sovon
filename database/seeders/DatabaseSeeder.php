@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\About;
 use App\Models\Admin;
+use App\Models\Opportunity;
 use App\Models\Setting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +21,14 @@ class DatabaseSeeder extends Seeder
         // Create default setting
         Setting::firstOrCreate([
             'header_logo' => ''
+        ]);
+
+        About::firstOrCreate([
+            'about_company' => ''
+        ]);
+
+        Opportunity::firstOrCreate([
+            'title' => ''
         ]);
 
 
