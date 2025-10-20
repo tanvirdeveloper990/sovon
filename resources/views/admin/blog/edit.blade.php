@@ -31,12 +31,12 @@
                     </div>
 
                     <!-- Slug -->
-                    <div>
+                    <!-- <div>
                         <label class="block text-gray-700 font-medium mb-1">Slug</label>
                         <input type="text" name="slug" value="{{ $data->slug }}"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-cyan-500 focus:ring-0 outline-none"
                             placeholder="Enter slug">
-                    </div>
+                    </div> -->
 
                     <!-- Post Date -->
                     <div>

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class CategoryController extends Controller
 {
@@ -32,10 +34,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|unique:categories,name',
+        ]);
+
         $data = $request->all();
 
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
         $data['image'] = $image;
+
+        $data['slug'] = Str::slug($request->name);
 
         Category::create($data);
         return redirect()->route('admin.categories.index')->with('success', 'Data Store successfully!');
@@ -66,6 +74,10 @@ class CategoryController extends Controller
     {
         $data = Category::findOrFail($id);
 
+        $request->validate([
+            'name' => 'required|unique:categories,name,' . $data->id,
+        ]);
+
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
         if($request->hasFile('image') && $data->image){
             Storage::disk('public')->delete($data->image);
@@ -73,6 +85,9 @@ class CategoryController extends Controller
       
         $input = $request->all();
         $input['image'] = $image;
+
+        $input['slug'] = Str::slug($request->name);
+        
         $data->update($input);
 
         return redirect()->route('admin.categories.index')->with('success', 'Data Update successfully!');

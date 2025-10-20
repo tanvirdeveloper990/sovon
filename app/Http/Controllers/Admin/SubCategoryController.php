@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class SubCategoryController extends Controller
 {
@@ -34,10 +36,18 @@ class SubCategoryController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'name' => 'required|unique:sub_categories,name',
+        ]);
+
+
         $data = $request->all();
 
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
         $data['image'] = $image;
+
+        $data['slug'] = Str::slug($request->name);
 
         SubCategory::create($data);
         return redirect()->route('admin.subcategories.index')->with('success', 'Data Store successfully!');
@@ -69,6 +79,10 @@ class SubCategoryController extends Controller
     {
         $data = SubCategory::findOrFail($id);
 
+        $request->validate([
+            'name' => 'required|unique:sub_categories,name,' . $data->id,
+        ]);
+
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
         if($request->hasFile('image') && $data->image){
             Storage::disk('public')->delete($data->image);
@@ -76,6 +90,10 @@ class SubCategoryController extends Controller
       
         $input = $request->all();
         $input['image'] = $image;
+
+        $input['slug'] = Str::slug($request->name);
+
+
         $data->update($input);
 
         return redirect()->route('admin.subcategories.index')->with('success', 'Data Update successfully!');
