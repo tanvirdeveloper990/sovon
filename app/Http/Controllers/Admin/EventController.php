@@ -90,6 +90,7 @@ class EventController extends Controller
           }
 
          $data->delete();
-        return redirect()->route('admin.events.index')->with('success', 'Data Delete successfully!');
+
+        return redirect()->back()->with('success', 'Data Delete successfully!');
     }
 }

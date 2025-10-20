@@ -118,6 +118,19 @@ class DatabaseSeeder extends Seeder
             'view teammember',
             'delete teammember',
 
+            // opportunities permissions
+            'create opportunities',
+            'edit opportunities',
+            'view opportunities',
+            'delete opportunities',
+
+             // offer-service permissions
+            'create offer-service',
+            'edit offer-service',
+            'view offer-service',
+            'delete offer-service',
+
+            
              // service permissions
             'create service',
             'edit service',

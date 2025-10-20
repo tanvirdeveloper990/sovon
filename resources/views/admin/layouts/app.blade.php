@@ -105,6 +105,9 @@ $setting = \App\Models\Setting::first();
 
                     </select>
                     </form>--}}
+                    <a href="{{url('/')}}" target="_blank">
+                        <i class="fas fa-globe"></i>
+                    </a>
                     <!-- Profile Dropdown -->
                     <div class="relative ms-3">
                         <button id="profileBtn" class="flex items-center space-x-2 focus:outline-none">
@@ -143,6 +146,29 @@ $setting = \App\Models\Setting::first();
     </div>
 
     <!-- ========== jQuery Script ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                placeholder: 'Write your content here...',
+                tabsize: 2,
+                height: 300,
+                fontSizes: ['8', '10', '12', '14', '16', '18', '20'], // ✅ reasonable sizes only
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             const sidebar = $('#sidebar');
@@ -227,7 +253,7 @@ $setting = \App\Models\Setting::first();
         });
     </script>
     @endif
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             $('.delete-btn').on('click', function(e) {
                 e.preventDefault();
@@ -255,7 +281,7 @@ $setting = \App\Models\Setting::first();
 
             });
         });
-    </script>
+    </script> -->
     <script>
         document.getElementById('printBtn').addEventListener('click', function() {
             // Save original page content

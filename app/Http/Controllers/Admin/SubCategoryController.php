@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +25,8 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.subcategory.create');
+        $category = Category::where('status','active')->get();
+        return view('admin.subcategory.create',compact('category'));
     }
 
     /**
@@ -56,7 +58,8 @@ class SubCategoryController extends Controller
     public function edit(string $id)
     {
         $data = SubCategory::findOrFail($id);
-        return view('admin.subcategory.edit', compact('data'));
+        $category = Category::where('status','active')->get();
+       return view('admin.subcategory.edit', compact('data','category'));
     }
 
     /**

@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HeroController;
+use App\Http\Controllers\Admin\OfferServiceController;
+use App\Http\Controllers\Admin\OpportunitieController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ServiceController;
@@ -55,23 +57,25 @@ Route::prefix('admin')
         Route::resource('users', UserController::class);
 
         // CRUD Start
-        Route::resource('hero',HeroController::class,);
-        Route::resource('abouts',AboutController::class,);
-        Route::resource('counters',CounterController::class,);
-        Route::resource('brands',BrandController::class,);
-        Route::resource('certifications',CertificationController::class,);
+        Route::resource('hero',HeroController::class);
+        Route::resource('abouts',AboutController::class);
+        Route::resource('counters',CounterController::class);
+        Route::resource('brands',BrandController::class);
+        Route::resource('certifications',CertificationController::class);
 
-        Route::resource('faqs',FaqController::class,);
-        Route::resource('team-members',TeammemberController::class,);
-        Route::resource('service',ServiceController::class,);
-        Route::resource('client-review',ClientreviewController::class,);
-        Route::resource('blogs',BlogController::class,);
+        Route::resource('faqs',FaqController::class);
+        Route::resource('team-members',TeammemberController::class);
+        Route::resource('opportunities',OpportunitieController::class);
+        Route::resource('service',ServiceController::class);
+        Route::resource('offer-service',OfferServiceController::class);
+        Route::resource('client-review',ClientreviewController::class);
+        Route::resource('blogs',BlogController::class);
 
-        Route::resource('contacts',ContactController::class,);
-        Route::resource('events',EventController::class,);
-        Route::resource('categories',CategoryController::class,);
-        Route::resource('subcategories',SubCategoryController::class,);
-        Route::resource('products',ProductController::class,);
+        Route::resource('contacts',ContactController::class);
+        Route::resource('events',EventController::class);
+        Route::resource('categories',CategoryController::class);
+        Route::resource('subcategories',SubCategoryController::class);
+        Route::resource('products',ProductController::class);
 
 
 

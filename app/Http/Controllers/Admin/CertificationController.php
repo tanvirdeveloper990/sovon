@@ -17,7 +17,7 @@ class CertificationController extends Controller
     public function index()
     {
         $data = Certification::latest()->get();
-        return view('admin.brand.index',compact('data'));
+        return view('admin.certification.index',compact('data'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CertificationController extends Controller
      */
     public function create()
     {
-        return view('admin.brand.create');
+        return view('admin.certification.create');
     }
 
     /**
@@ -36,10 +36,11 @@ class CertificationController extends Controller
         $data = $request->all();
 
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
+
         $data['image'] = $image;
 
         Certification::create($data);
-        return redirect()->route('admin.brands.index')->with('success', 'Data Store successfully!');
+        return redirect()->route('admin.certifications.index')->with('success', 'Data Store successfully!');
     }
 
     /**
@@ -48,7 +49,7 @@ class CertificationController extends Controller
     public function show(string $id)
     {
         $data = Certification::findOrFail($id);
-        return view('admin.brand.edit', compact('data'));
+        return view('admin.certification.edit', compact('data'));
     }
 
     /**
@@ -57,7 +58,7 @@ class CertificationController extends Controller
     public function edit(string $id)
     {
         $data = Certification::findOrFail($id);
-        return view('admin.brand.edit', compact('data'));
+        return view('admin.certification.edit', compact('data'));
     }
 
     /**
@@ -68,6 +69,7 @@ class CertificationController extends Controller
         $data = Certification::findOrFail($id);
 
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
+        
         if($request->hasFile('image') && $data->image){
             Storage::disk('public')->delete($data->image);
         }
@@ -76,7 +78,7 @@ class CertificationController extends Controller
         $input['image'] = $image;
         $data->update($input);
 
-        return redirect()->route('admin.brands.index')->with('success', 'Data Update successfully!');
+        return redirect()->route('admin.certifications.index')->with('success', 'Data Update successfully!');
 
     }
 
@@ -91,6 +93,6 @@ class CertificationController extends Controller
           }
 
          $data->delete();
-        return redirect()->route('admin.brands.index')->with('success', 'Data Delete successfully!');
+        return redirect()->route('admin.certifications.index')->with('success', 'Data Delete successfully!');
     }
 }

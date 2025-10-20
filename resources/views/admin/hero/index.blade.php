@@ -12,9 +12,9 @@
                 <h3 class="text-xl font-semibold tracking-wide">Hero List</h3>
 
 
-                <a href="{{ route('admin.coupons.create') }}"
+                <a href="{{ route('admin.hero.create') }}"
                     class="mt-3 sm:mt-0 inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 shadow-sm">
-                    <i class="fa fa-plus"></i> Add Coupons
+                    <i class="fa fa-plus"></i> Add Hero
                 </a>
 
             </div>
@@ -25,8 +25,9 @@
                     <thead class="bg-gray-50">
                         <tr class="text-left text-gray-600 font-semibold uppercase tracking-wider text-xs">
                             <th class="px-5 py-3">Sl</th>
-                            <th class="px-5 py-3">Coupon</th>
-                            <th class="px-5 py-3">Amount (%)</th>
+                            <th class="px-5 py-3">Title</th>
+                            <th class="px-5 py-3">Product Link</th>
+                            <th class="px-5 py-3">Lern More</th>
                             <th class="px-5 py-3">Status</th>
                             <th class="px-5 py-3 text-center">Action</th>
                         </tr>
@@ -37,25 +38,26 @@
 
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
                             <td class="px-5 py-3 text-gray-700 font-medium">{{ $loop->iteration }}</td>
-                            <td class="px-5 py-3 text-gray-800 font-medium">{{ $item->coupon_code }}</td>
-                            <td class="px-5 py-3 text-gray-800 font-medium">{{ $item->amount }}%</td>
+                            <td class="px-5 py-3 text-gray-800 font-medium">{{ $item->title }}</td>
+                            <td class="px-5 py-3 text-gray-800 font-medium">{{ $item->product_link }}</td>
+                            <td class="px-5 py-3 text-gray-800 font-medium">{{ $item->learn_more_link }}</td>
 
-                          <td class="px-5 py-3">
-                            @if($item->status == 1)
+                            <td class="px-5 py-3">
+                                @if($item->status == 'active')
                                 <span class="px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
                                     Active
                                 </span>
-                            @else
+                                @else
                                 <span class="px-3 py-1 text-xs font-semibold text-red-700 bg-red-100 rounded-full">
                                     Deactive
                                 </span>
-                            @endif
-                        </td>
+                                @endif
+                            </td>
 
                             <td class="px-5 py-3 text-center">
                                 <div class="flex justify-center items-center gap-2">
 
-                                    <a href="{{ route('admin.coupons.edit', $item->id) }}"
+                                    <a href="{{ route('admin.hero.edit', $item->id) }}"
                                         class="w-8 h-8 flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-sm transition-all duration-200">
                                         <i class="fa fa-edit text-xs"></i>
                                     </a>
@@ -63,7 +65,7 @@
 
 
                                     <form id="delete-form-{{ $item->id }}"
-                                        action="{{ route('admin.coupons.destroy', $item->id) }}" method="POST"
+                                        action="{{ route('admin.hero.destroy', $item->id) }}" method="POST"
                                         class="hidden">
                                         @csrf
                                         @method('DELETE')

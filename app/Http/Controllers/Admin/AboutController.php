@@ -16,7 +16,7 @@ class AboutController extends Controller
     public function index()
     {
         $data = About::first();
-        return view('admin.about.index',compact('data'));
+        return view('admin.about.index', compact('data'));
     }
 
     /**
@@ -56,45 +56,45 @@ class AboutController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data =About::findOrFail($id);
+        $data = About::findOrFail($id);
 
         $imageone = $request->hasFile('image_1') ? ImageHelper::uploadImage($request->file('image_1')) : null;
         $imagetwo = $request->hasFile('image_2') ? ImageHelper::uploadImage($request->file('image_2')) : null;
+        $logo = $request->hasFile('logo') ? ImageHelper::uploadImage($request->file('logo')) : null;
 
-        if($request->hasFile('image_1') && $data->image_1){
+        if ($request->hasFile('image_1') && $data->image_1) {
             Storage::disk('public')->delete($data->image_1);
         }
 
-         if($request->hasFile('image_2') && $data->image_2){
+        if ($request->hasFile('image_2') && $data->image_2) {
             Storage::disk('public')->delete($data->image_2);
+        }
+
+        if ($request->hasFile('logo') && $data->logo) {
+            Storage::disk('public')->delete($data->logo);
         }
 
         $input = $request->all();
 
-        $input['image_1'] = $imageone;
-        $input['image_2'] = $imagetwo;
+        if ($imageone) {
+             $input['image_1'] = $imageone;
+        }
+        if($imagetwo){
+
+             $input['image_2'] = $imagetwo;
+        }
+         if($logo){
+            $input['logo'] = $logo;
+        }
+       
+        
 
         $data->update($input);
         return redirect()->back()->with('success', 'Data Update successfully!');
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $data =About::findOrFail($id);
-
-         if($data->image_1){
-            Storage::disk('public')->delete($data->image_1);
-        }
-
-         if($data->image_2){
-            Storage::disk('public')->delete($data->image_2);
-        }
-
-        $data->delete();
-        
-    }
+    public function destroy(string $id) {}
 }

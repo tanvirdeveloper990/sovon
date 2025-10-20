@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Hero;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HeroController extends Controller
 {
@@ -31,7 +33,8 @@ class HeroController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+        $video = $request->hasFile('video') ? ImageHelper::uploadImage($request->file('video')) : null;
+        $data['video'] = $video;
         Hero::create($data);
         return redirect()->route('admin.hero.index')->with('success', 'Data Store successfully!');
     }
@@ -61,7 +64,13 @@ class HeroController extends Controller
     {
         $data = Hero::findOrFail($id);
 
+        $video = $request->hasFile('video') ? ImageHelper::uploadImage($request->file('video')) : null;
+        if($request->hasFile('video') && $data->video){
+            Storage::disk('public')->delete($data->video);
+        }
+
         $input = $request->all();
+        $input['video'] = $video;
         $data->update($input);
 
         return redirect()->route('admin.hero.index')->with('success', 'Data Update successfully!');
@@ -74,7 +83,9 @@ class HeroController extends Controller
     public function destroy(string $id)
     {
          $data = Hero::findOrFail($id);
-
+         if($data->video){
+            Storage::disk('public')->delete($data->video);
+          }
          $data->delete();
         return redirect()->route('admin.hero.index')->with('success', 'Data Delete successfully!');
     }

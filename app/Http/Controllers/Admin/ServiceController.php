@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -32,14 +33,21 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+       $request->validate([
+            'name' => 'required|unique:services,name',
+        ]);
         $data = $request->all();
 
         $icon = $request->hasFile('icon') ? ImageHelper::uploadImage($request->file('icon')) : null;
         $banner = $request->hasFile('banner') ? ImageHelper::uploadImage($request->file('banner')) : null;
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
+        $file_download = $request->hasFile('file_download') ? ImageHelper::uploadImage($request->file('file_download')) : null;
         $data['icon'] = $icon;
         $data['banner'] = $banner;
         $data['image'] = $image;
+        $data['file_download'] = $file_download;
+
+        $data['slug'] = Str::slug($request->name);
 
         Service::create($data);
         return redirect()->route('admin.service.index')->with('success', 'Data Store successfully!');
@@ -70,9 +78,14 @@ class ServiceController extends Controller
     {
         $data = Service::findOrFail($id);
 
+        $request->validate([
+            'name' => 'required|unique:services,name,' . $data->id,
+        ]);
+
         $icon = $request->hasFile('icon') ? ImageHelper::uploadImage($request->file('icon')) : null;
         $banner = $request->hasFile('banner') ? ImageHelper::uploadImage($request->file('banner')) : null;
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
+        $file_download = $request->hasFile('file_download') ? ImageHelper::uploadImage($request->file('file_download')) : null;
 
         if($request->hasFile('icon') && $data->icon){
             Storage::disk('public')->delete($data->icon);
@@ -83,11 +96,30 @@ class ServiceController extends Controller
         if($request->hasFile('image') && $data->image){
             Storage::disk('public')->delete($data->image);
         }
+        if($request->hasFile('file_download') && $data->file_download){
+            Storage::disk('public')->delete($data->file_download);
+        }
       
         $input = $request->all();
-        $input['icon'] = $icon;
-        $input['banner'] = $banner;
-        $input['image'] = $image;
+        if($icon)
+        {
+            $input['icon'] = $icon;
+        }
+
+        if($banner)
+        {
+            $input['banner'] = $banner;
+        }
+        if($image)
+        {
+            $input['image'] = $image;
+        }
+        if($file_download)
+        {
+            $input['file_download'] = $file_download;
+        }
+
+        $input['slug'] = Str::slug($request->name);
 
         $data->update($input);
 

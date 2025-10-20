@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class OfferService extends Model
 {
     protected $guarded = [];
+
+    public function service(){
+        return $this->belongsTo(Service::class,'service_id');
+    }
 }

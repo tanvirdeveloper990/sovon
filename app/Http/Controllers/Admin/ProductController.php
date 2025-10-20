@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $data = Product::latest()->get();
-        return view('admin.product.index',compact('data'));
+        return view('admin.product.index', compact('data'));
     }
 
     /**
@@ -24,7 +26,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $category = Category::where('status', 'active')->get();
+        $subcategory = SubCategory::where('status', 'active')->get();
+
+        return view('admin.product.create', compact('category', 'subcategory'));
     }
 
     /**
@@ -56,7 +61,9 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $data = Product::findOrFail($id);
-        return view('admin.product.edit', compact('data'));
+        $category = Category::where('status', 'active')->get();
+        $subcategory = SubCategory::where('status', 'active')->get();
+        return view('admin.product.edit', compact('data','category', 'subcategory'));
     }
 
     /**
@@ -67,16 +74,15 @@ class ProductController extends Controller
         $data = Product::findOrFail($id);
 
         $image = $request->hasFile('image') ? ImageHelper::uploadImage($request->file('image')) : null;
-        if($request->hasFile('image') && $data->image){
+        if ($request->hasFile('image') && $data->image) {
             Storage::disk('public')->delete($data->image);
         }
-      
+
         $input = $request->all();
         $input['image'] = $image;
         $data->update($input);
 
         return redirect()->route('admin.products.index')->with('success', 'Data Update successfully!');
-
     }
 
     /**
@@ -84,12 +90,12 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-         $data = Product::findOrFail($id);
-          if($data->image){
+        $data = Product::findOrFail($id);
+        if ($data->image) {
             Storage::disk('public')->delete($data->image);
-          }
+        }
 
-         $data->delete();
+        $data->delete();
         return redirect()->route('admin.products.index')->with('success', 'Data Delete successfully!');
     }
 }

@@ -23,6 +23,16 @@ Route::get('/', [WebsiteController::class, 'index'])->name('index');
 
 
 
+Route::get('/service/{slug}', [WebsiteController::class, 'serviceSingle'])->name('service.single');
+Route::get('/faq', [WebsiteController::class, 'faq'])->name('faq');
+Route::get('/events', [WebsiteController::class, 'events'])->name('events');
+Route::get('/teams', [WebsiteController::class, 'teams'])->name('teams');
+Route::get('/news-and-media', [WebsiteController::class, 'news'])->name('news');
+Route::get('/news-and-media/{slug}', [WebsiteController::class, 'newsSingle'])->name('news.single');
+Route::get('/contacts', [WebsiteController::class, 'contacts'])->name('contacts');
+
+
+
 Auth::routes(); // ✅ Removed ['verify' => true]
 
 require __DIR__ . '/admin.php';

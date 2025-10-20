@@ -13,7 +13,7 @@ class TeammemberController extends Controller
     /**
      * Display a listing of the resource.
      */
-     public function index()
+    public function index()
     {
         $data = TeamMember::latest()->get();
         return view('admin.team-member.index',compact('data'));

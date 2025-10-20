@@ -67,6 +67,7 @@ class CounterController extends Controller
         $data = Counter::findOrFail($id);
 
         $icon = $request->hasFile('icon') ? ImageHelper::uploadImage($request->file('icon')) : null;
+        
         if($request->hasFile('icon') && $data->icon){
             Storage::disk('public')->delete($data->icon);
         }
